@@ -1,15 +1,15 @@
 <template>
-  <hello-world />
+  <Upload />
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld'
+import Upload from '../components/Upload'
 
 export default {
   name: 'Home',
 
   components: {
-    HelloWorld
+    Upload
   }
 }
 </script>

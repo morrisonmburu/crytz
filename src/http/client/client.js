@@ -21,6 +21,8 @@ const client = axios.create(config)
  */
 const authInterceptor = config => {
   config.headers.common.Accept = 'Application/json'
+  config.headers = { 'Access-Control-Allow-Origin': '*' }
+  console.log('config', config)
   return config
 }
 
