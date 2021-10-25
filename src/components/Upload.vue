@@ -1,20 +1,16 @@
 <template>
   <v-container>
-    <div class="upload">
-      <v-btn
-          color="blue-grey"
-          large
-          class="ma-2 white--text"
-          @click="upload()"
-        >
-          Upload
-          <v-icon
-            right
-            dark
-          >
-            cloud_upload
-          </v-icon>
-        </v-btn>
+    <div class="head">
+      <div class="text-lg-h5">Detect Facial Manipulated Deepfake Videos</div>
+      <div class="text-lg-h6">Click the upload button or drag and drop to upload</div>
+    </div>
+    <div class="d-flex justify-center">
+      <div @dragover="dragover" @dragleave="dragleave" @drop="drop" class="upload" :style="{ backgroundColor: backColor, }">
+        <div class="d-flex justify-center">
+          <v-img style="cursor: pointer" @click="upload()" src="https://cdn-icons-png.flaticon.com/512/4506/4506353.png" width="200"/>
+        </div>
+        <div style="text-align: center" class="text-md-h6">Upload</div>
+      </div>
     </div>
     <input
       type="file"
@@ -30,14 +26,23 @@
 <style>
   .upload {
     align-content: center;
-    margin: 30% 30% 30% 45%;
+    border: 5px dotted #CACFD2;
+    border-radius: 7%;
+    padding: 5%;
+  }
+  .head {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 2%;
   }
 </style>
 <script>
 import call from '../http/index.js'
 export default {
   name: 'Upload',
-  data: () => ({}),
+  data: () => ({
+    backColor: '#ffffff'
+  }),
   methods: {
     upload () {
       this.$refs.uploader.click()
@@ -45,9 +50,22 @@ export default {
     async uploadFile () {
       const data = new FormData()
       data.append('file', this.$refs.uploader.files[0])
-      console.log('file', data)
       const res = await call('post', 'upload', data)
       console.log(res)
+    },
+    dragover (event) {
+      event.preventDefault()
+      this.backColor = '#BBDEFB'
+    },
+    dragleave (event) {
+      event.preventDefault()
+      this.backColor = '#ffffff'
+    },
+    drop (event) {
+      event.preventDefault()
+      this.$refs.uploader.files = event.dataTransfer.files
+      this.uploadFile()
+      this.backColor = '#ffffff'
     }
   }
 }
